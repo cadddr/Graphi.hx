@@ -17,8 +17,7 @@ class Sphere extends Surface {
 		this.radius = radius;
 	}
 	public override function norm(point:Vector3): Vector3 {
-		var normal = point.sub(center);
-		normal.normalize();
+		var normal = point.sub(center).normalized();
 		return normal;
 	}
 	public override function ray(orig: Vector3, dir: Vector3): Float {
@@ -56,7 +55,7 @@ class Face extends Surface {
 		this.b = b;
 		this.c = c;
 		if (normal == null) {
-			normal = b.sub(a).cross(c.sub(a)); normal.normalize();
+			normal = b.sub(a).cross(c.sub(a)).normalized();
 		}
 		this.normal = normal;
 	}

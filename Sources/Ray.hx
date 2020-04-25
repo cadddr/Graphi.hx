@@ -1,21 +1,26 @@
 import kha.math.Vector3;
+// import Scene.numRays;
 
 class Ray {
-  var origin: Vector3;
+  var MAX_HOPS = 3;
+  public var origin: Vector3;
   var direction: Vector3;
+  var bounceCount: Int;
 
-  public function new(origin: Vector3, direction: Vector3) {
+  public function new(origin: Vector3, direction: Vector3, bounceCount: Int = 0) {
     this.origin = origin;
     this.direction = direction;
+    this.bounceCount = bounceCount;
+    // Scene.numRays++;
   }
 
   public function getPointAt(t: Float): Vector3 {
       return origin.add(direction.mult(t));
   }
 
-  public function intersection(surfaces: Array<Surface>, findClosest: Bool): Intersection {
+  public function intersection(targets: Array<Surface>, findClosest: Bool): Intersection {
     var result = new Intersection(this, null, Math.POSITIVE_INFINITY);
-    for (target in surfaces) {
+    for (target in targets) {
       var t = target.ray(origin, direction);
       if (t > 0 && t < result.t) {
         result = new Intersection(this, target, t);
@@ -25,6 +30,19 @@ class Ray {
       }
     }
     return result;
+  }
+
+  public function miss(targets: Array<Surface>): Bool {
+    return intersection(targets, false).target == null;
+  }
+
+  public function bounce(point: Vector3, normal: Vector3, from: Vector3): Ray {
+    if (bounceCount < MAX_HOPS) {
+      var to_view = point.sub(from).normalized();
+      var to = to_view.sub(normal.mult(2 * to_view.dot(normal)));
+      return new Ray(point, to, ++bounceCount);
+    }
+    return null;
   }
 }
 
