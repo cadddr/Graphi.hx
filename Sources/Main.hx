@@ -9,18 +9,23 @@ import Sys;
 import Scene;
 import Render;
 
+import pgr.dconsole.DC;
 
+import Math;
 
 class Main {
 	static var TITLE = "Grafikha";
 	static var WIDTH = 600;
 	static var HEIGHT = 600;
 	static var REFRESH_RATE = 1 / 60;
-	static var INPUT = "balls-2.nff";
+	static var INPUT = "input.nff";
+
+	// static function notifyOnFrames(func:function): Void {
+	//
+	// }
+
 
 	public static function main() {
-		trace(Sys.stdin().readLine());
-
 		// TODO: read resolution from file
 		System.start({title: TITLE, width: WIDTH, height: HEIGHT}, function (window:Window) {
 			// Just loading everything is ok for small projects
@@ -32,6 +37,9 @@ class Main {
 				// so replacing them via code injection works
 				Scheduler.addTimeTask(function () { render.update(); }, 0, REFRESH_RATE);
 				System.notifyOnFrames(function (framebuffers) { render.render(framebuffers[0]); });
+
+				DC.init();
+				DC.registerObject(render, "render");
 			});
 		});
 	}

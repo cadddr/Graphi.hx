@@ -94,13 +94,14 @@ class Render {
 
   public function update(): Void {
     // window.changeWindowFeatures(WindowFeatures.FeatureBorderless);
-    trace(window.title);
+    // trace(window.title);
     // window.resize(400, 400);
-    this.window.title = 'number: ${Math.random()}';
+    // this.window.title = 'number: ${Math.random()}';
   }
 
 
   public function render(fb: Framebuffer): Void {
+    // return;
     var lastTime = Scheduler.realTime();
 
     // Scene.numRays = 0;
@@ -114,6 +115,6 @@ class Render {
     // trace ('Rays per pixel: ${Scene.numRays / (fb.height * fb.width)}');
     var currentTime = Scheduler.realTime();
     var deltaTime = currentTime - lastTime;
-    trace('Frame time: $deltaTime');
+    // trace('Frame time: $deltaTime');
   }
 }

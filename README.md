@@ -1,7 +1,7 @@
 # Graphi.hx
 Pronounced ***grae:fi/h/ks***, alternatively Grafikha -- a nod to either Haxe language or Kha graphics backend or whatever.
 
-A hobby ray tracer from scratch in Haxe using Kha as a low-level graphics API (for vector maths and putting pixels on the screen). 
+A hobby ray tracer from scratch in Haxe using Kha as a low-level graphics API (for vector maths and putting pixels on the screen).
 
 * The initial goal was an obscure minimal business card-style implementation, but with more features added and for better flexibility some modularization became necessary.
 
@@ -16,3 +16,25 @@ A hobby ray tracer from scratch in Haxe using Kha as a low-level graphics API (f
 * Stretch goals: some depth of field and motion blur would be sweet.
 
 * No plans whatsoever of making it into usable game engine or anything like that. Intend to perform zero modeling as well.
+
+### Roadmap:
+
+* Restore existing features (triangles, obj format, camera movement)
+
+* <del>Figure out Electron HTML5 target in Atom</del>
+
+* Interface: Interactive manipulation of render parameters (also read from nff)
+
+* Interface: input model file from command line; log info to window title
+
+* Feature: Refraction
+
+* Feature: sampled/temporal AA
+
+* Optimization: adaptive resolution/caching
+
+* Optimization: Offload ray calculations onto compute shaders
+
+* Optimization: Rasterized visibility
+
+* Optimization: further modularization
