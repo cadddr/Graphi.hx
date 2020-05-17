@@ -11,7 +11,7 @@ class Ray {
     this.origin = origin;
     this.direction = direction;
     this.bounceCount = bounceCount;
-    // Scene.numRays++;
+    Scene.numRays++;
   }
 
   public function getPointAt(t: Float): Vector3 {

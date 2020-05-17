@@ -4,6 +4,7 @@ import kha.Assets;
 import kha.Scheduler;
 import kha.System;
 import kha.Window;
+import kha.Framebuffer;
 import Sys;
 
 import Scene;
@@ -20,27 +21,39 @@ class Main {
 	static var REFRESH_RATE = 1 / 60;
 	static var INPUT = "input.nff";
 
-	// static function notifyOnFrames(func:function): Void {
-	//
-	// }
-
+	static var renderer: Render;
 
 	public static function main() {
 		// TODO: read resolution from file
 		System.start({title: TITLE, width: WIDTH, height: HEIGHT}, function (window:Window) {
-			// Just loading everything is ok for small projects
 			Assets.loadBlobFromPath(INPUT, function (blob) {
 				var scene = Scene.readNff(blob.toString());
-				trace(window.title);
-				var render = new Render(scene, window);
-				// Avoid passing update/render directly,
-				// so replacing them via code injection works
-				Scheduler.addTimeTask(function () { render.update(); }, 0, REFRESH_RATE);
-				System.notifyOnFrames(function (framebuffers) { render.render(framebuffers[0]); });
+				renderer = new Render(scene);
 
 				DC.init();
-				DC.registerObject(render, "render");
+				DC.registerObject(renderer, "render");
+				DC.monitorField(Scene, "numRays", "numRays");
+				DC.monitorField(renderer.scene, "numSamples", "numSamples");
+
+				Scheduler.addTimeTask(update, 0, REFRESH_RATE);
+				System.notifyOnFrames(function (framebuffers) {
+					DC.beginProfile('SampleName');
+					render(framebuffers[0]);
+					DC.endProfile('SampleName');
+				});
 			});
 		});
+	}
+
+	static function update(): Void {}
+
+	static function render(fb: Framebuffer): Void {
+			fb.g1.begin();
+			for (y in 0...fb.height) {
+				for (x in 0...fb.width) {
+						fb.g1.setPixel(x, y, renderer.getPixelColor(x, y, fb.width, fb.height));
+				}
+			}
+			fb.g1.end();
 	}
 }

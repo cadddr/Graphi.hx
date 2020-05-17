@@ -1,4 +1,3 @@
-import kha.Framebuffer;
 import kha.math.Vector3;
 import kha.Color;
 import kha.Scheduler;
@@ -9,13 +8,13 @@ import kha.WindowOptions.WindowFeatures;
 import Utils.vec2col;
 import Utils.col2vec;
 
+import kha.Worker;
+
 class Render {
-  private var scene: Scene;
-  private var window: Window;
-  public function new(scene: Scene, window: Window) {
+  public var scene: Scene;
+
+  public function new(scene: Scene) {
     this.scene = scene;
-    this.window = window;
-    trace(window.title);
   }
 
   private function diffuse(normal: Vector3, to_light: Vector3): Float {
@@ -73,7 +72,7 @@ class Render {
 		return col2vec(scene.default_color);
   }
 
-  private function getPixelColor(x: Float, y: Float, width: Float, height: Float): Color {
+  public function getPixelColor(x: Float, y: Float, width: Float, height: Float): Color {
     // var samples = [];
     // var color:Vector3 = null;
     // for (i in 0...scene.numSamples) {
@@ -90,31 +89,5 @@ class Render {
     // }
     // averagedColor = averagedColor.mult(1 / scene.numSamples);
     // return vec2col(averagedColor);
-  }
-
-  public function update(): Void {
-    // window.changeWindowFeatures(WindowFeatures.FeatureBorderless);
-    // trace(window.title);
-    // window.resize(400, 400);
-    // this.window.title = 'number: ${Math.random()}';
-  }
-
-
-  public function render(fb: Framebuffer): Void {
-    // return;
-    var lastTime = Scheduler.realTime();
-
-    // Scene.numRays = 0;
-    fb.g1.begin();
-    for (y in 0...fb.height) {
-      for (x in 0...fb.width) {
-          fb.g1.setPixel(x, y, getPixelColor(x, y, fb.width, fb.height));
-      }
-    }
-    fb.g1.end();
-    // trace ('Rays per pixel: ${Scene.numRays / (fb.height * fb.width)}');
-    var currentTime = Scheduler.realTime();
-    var deltaTime = currentTime - lastTime;
-    // trace('Frame time: $deltaTime');
   }
 }

@@ -31,7 +31,8 @@ class Scene {
   public var epsilon = 0.00000001;
   public var ir = 0.5;
 
-  public var noise = 0;//0.0001;
+  public var noise:Float = 0.;//0.0001;
+
   public var numSamples =4;
 
   public static var numRays = 0;
