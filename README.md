@@ -23,15 +23,17 @@ A hobby ray tracer from scratch in Haxe using Kha as a low-level graphics API (f
 
 * <del>Figure out Electron HTML5 target in Atom</del>
 
-* Interface: Interactive manipulation of render parameters (also read from nff)
+* Interface: <del>Interactive manipulation of render parameters</del> (also read from nff)
+  * mouse dragging input values
 
-* Interface: input model file from command line; log info to window title
+* Interface: input model file from command line; <del>log info to window title</del>
 
 * Feature: Refraction
 
 * Feature: sampled/temporal AA
 
 * Optimization: adaptive resolution/caching
+  * multithreading or round robin
 
 * Optimization: Offload ray calculations onto compute shaders
 

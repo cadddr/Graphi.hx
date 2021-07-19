@@ -5,7 +5,7 @@ at 0 0 1
 s 0 0 3 1 0xffaaaaff
 s 0.5 0 1 0.25 0xffffaaaa
 s -0.5 0 1 0.1 0xffaaffaa
-s 0 -10 1 9 0xff7ec0ee
+s 0 -10 1 9 0xffffa500#0xff7ec0ee
 
 l -1 10 1
 l .5 0 -1
