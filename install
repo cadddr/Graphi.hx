@@ -1,0 +1,12 @@
+git submodule add https://github.com/Kode/Kha
+
+cd Kha
+git submodule update --init --recursive
+cd ..
+
+mkdir libs
+cd libs
+git clone https://github.com/cadddr/dconsole.git
+cd ..
+
+sudo npm install -g electron

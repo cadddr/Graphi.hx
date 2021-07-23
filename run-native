@@ -1,0 +1,2 @@
+node ./Kha/make --compile
+node ./Kha/make --run
