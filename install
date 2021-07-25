@@ -6,7 +6,11 @@ cd ..
 
 mkdir libs
 cd libs
+git clone https://github.com/Kha-Samples/Kha2D.git
 git clone https://github.com/cadddr/dconsole.git
+cd dconsole
+git checkout kha_debug_html5
+cd ..
 cd ..
 
 sudo npm install -g electron

@@ -3,6 +3,7 @@ import Render;
 import kha.Color;
 import kha.Scheduler;
 import pgr.dconsole.DC;
+import kha.Blob;
 
 interface IRenderSampler {
     public function render(fb: Framebuffer): Void;
@@ -43,7 +44,7 @@ goal: render must take a fixed amount of time (given by framerate target)
     static var resolutionScale: Int = 2;
 
     static var callCount: Int = 0;
-    static var backbuffer: Array<Array<Color>>;
+    public var backbuffer: Array<Array<Color>>;
 
     public function new(renderer: Render) {
         this.renderer = renderer;
@@ -82,6 +83,12 @@ goal: render must take a fixed amount of time (given by framerate target)
 		frameTime = renderEndTime - renderBeginTime;
 
 		callCount = (callCount + 1) % (resolutionScale * resolutionScale);
+
+		
+
+		// trace(backbuffer);
+		// throw null;
+		
 
 		// if (frameTime < REFRESH_RATE) {
 		// 	resolutionScale = Std.int(Math.max(Std.int(resolutionScale / 2), 1));
