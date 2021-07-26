@@ -5,11 +5,17 @@ import kha.Scheduler;
 import pgr.dconsole.DC;
 import kha.Blob;
 
+/*
+Manages the workload of rendering pixels.
+*/
+
 interface IRenderSampler {
+	public var backbuffer: Array<Color>;
     public function render(fb: Framebuffer): Void;
 }
 
 class SimpleRender implements IRenderSampler {
+	public var backbuffer: Array<Color> = null;
     private var renderer: Render;
     public function new(renderer: Render) {
         this.renderer = renderer;
@@ -41,10 +47,11 @@ goal: render must take a fixed amount of time (given by framerate target)
     private var renderer: Render;
 
     static var frameTime: Float;
-    static var resolutionScale: Int = 2;
+    static var resolutionScale: Int = 1;
 
     static var callCount: Int = 0;
-    public var backbuffer: Array<Array<Color>>;
+    
+	public var backbuffer: Array<Color>;
 
     public function new(renderer: Render) {
         this.renderer = renderer;
@@ -56,11 +63,10 @@ goal: render must take a fixed amount of time (given by framerate target)
 
     public function render(fb: Framebuffer): Void {
 		if (callCount == 0) {
-			 backbuffer = [for (y in 0...fb.height) [for (x in 0...fb.width) 0xffffffff]];
+			backbuffer = [for (xy in 0...fb.width * fb.height) 0xffffffff];
 		}
 		var renderBeginTime = Scheduler.realTime();
 		fb.g1.begin();
-		// var bo = haxe.io.Bytes.alloc(WIDTH * HEIGHT);
 		for (y in 0...fb.height) {
 			for (x in 0...fb.width) {
 
@@ -70,12 +76,11 @@ goal: render must take a fixed amount of time (given by framerate target)
 						var y_ = y + Std.int(callCount / resolutionScale);
 						DC.beginProfile("PixelTime");
 						var pixelColor: Color = renderer.getPixelColor(x_, y_, fb.width, fb.height);
-						backbuffer[y_][x_] = pixelColor;
+						backbuffer[y_ * fb.width + x_] = pixelColor;
 						DC.endProfile("PixelTime");
 					}
 				}
-				fb.g1.setPixel(x, y, backbuffer[y][x]);
-				// bo.setInt32(backbuffer[y][x].value, x + y * WIDTH);
+				fb.g1.setPixel(x, y, backbuffer[y * fb.width + x]);
 			}
 		}
 		fb.g1.end();
@@ -84,23 +89,11 @@ goal: render must take a fixed amount of time (given by framerate target)
 
 		callCount = (callCount + 1) % (resolutionScale * resolutionScale);
 
-		
-
-		// trace(backbuffer);
-		// throw null;
-		
-
 		// if (frameTime < REFRESH_RATE) {
 		// 	resolutionScale = Std.int(Math.max(Std.int(resolutionScale / 2), 1));
 		// }
 		// else {
 		// 	resolutionScale = Std.int(Math.min(Std.int(resolutionScale * 2), 600));
 		// }
-
-		
-        
-		
-		// sys.io.File.saveBytes('output.txt', bo);
-		
 	}
 }

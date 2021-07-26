@@ -40,3 +40,17 @@ A hobby ray tracer from scratch in Haxe using Kha as a low-level graphics API (f
 * Optimization: Rasterized visibility
 
 * Optimization: further modularization
+
+### Plan
+- electron security flag
+- proper electron installation
+- decouple from dconsole via events
+- Issue: dcmonitor won't open on native (shift+tab)
+- adaptive render sampling
+- recover obj / triangles
+- dconsole in separate thread (where available)
+#### Today:
+- sample views based on camera rotation
+- save sampled views to files & corresponding view params
+- do for each scene
+

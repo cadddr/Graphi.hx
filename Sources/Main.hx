@@ -1,5 +1,6 @@
 package;
 
+import ViewSampler.RandomViewSampler;
 import kha.Assets;
 import kha.Scheduler;
 import kha.System;
@@ -30,6 +31,10 @@ import Utils;
 
 import kha2d.Sprite;
 
+import haxe.io.Bytes;
+import kha.Blob;
+import ViewSampler.RandomViewSampler;
+
 class Main {
 	static var TITLE = "Grafikha";
 	static var WIDTH = 512;
@@ -39,47 +44,43 @@ class Main {
 	static var scene: Scene;
 	static var renderer: Render;
 	static var sampler: IRenderSampler;
+	static var viewSampler: RandomViewSampler;
 
 	public static function main() {
+		var frame: Array<Color>;
+
 		System.start({title: TITLE, width: WIDTH, height: HEIGHT}, function (window:Window) {
 			Assets.loadBlobFromPath('config.json', function (blob) {
 				var config: Config = Json.parse(blob.toString());
 				trace (config);
-
-				// var file = new StorageFile();
-				// Storage.namedFile("test").write(new kha.Blob(haxe.io.getBytes(0, new haxe.io.BytesData())));
 
 				Assets.loadBlobFromPath(config.INPUT, function (blob) {
 					scene = Scene.readNff(blob.toString());
 					
 					renderer = new Render(scene);
 					
-					sampler = new SimpleRender(renderer);
-					DC.init();
+					sampler = new AdaptiveRender(renderer);
+					// DC.init();
 					// DC.registerObject(renderer, "render");
 					// DC.registerClass(Main, "Main");
 
-					
-	
 					System.notifyOnFrames(function (framebuffers) {
 						// DC.beginProfile("Render");
 						sampler.render(framebuffers[0]);
+						frame = sampler.backbuffer;
 						// DC.endProfile("Render");
 					});
 				});
-
-				// #if sys
-				// // sys.io.File.saveBytes(config.outputDir + 'output.txt', new haxe.io.Bytes(WIDTH, sampler.backbuffer[0]));
-				// #end
 			});
 		});
+		        // #if sys
+		// // sys.io.File.saveBytes(config.outputDir + 'output.txt', new haxe.io.Bytes(WIDTH, sampler.backbuffer[0]));
+		// #end
 		// var file: StorageFile = (Storage.defaultFile());
-
-		// // file.writeString("testtesttest");
-		// trace(file.readString());
-
-		// trace(StringTools.hex(65546));
-
-		
+		// var bytes: Bytes = Bytes.alloc(WIDTH * HEIGHT * 4);
+		// for (i in 0...WIDTH * HEIGHT) {
+		// 	bytes.setInt32(i * 4, frame[i]);
+		// }
+		// file.write(Blob.fromBytes(bytes));
 	}
 }
