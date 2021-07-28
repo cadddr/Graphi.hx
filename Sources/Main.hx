@@ -66,7 +66,7 @@ class Main {
 					}
 					
 					renderer = new Render(scene);
-					sampler = new SimpleRender(renderer);
+					sampler = new BufferedRenderer(renderer);
 					viewSampler = new RandomViewSampler(scene, sampler);
 
 					DC.init();

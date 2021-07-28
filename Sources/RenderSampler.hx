@@ -4,7 +4,10 @@ import kha.Color;
 import kha.Scheduler;
 import pgr.dconsole.DC;
 import kha.Blob;
+import kha.Image;
+import haxe.io.Bytes;
 
+import Utils.pixelsToBytes;
 /*
 Manages the workload of rendering pixels.
 */
@@ -45,14 +48,18 @@ class BufferedRenderer implements IRenderSampler {
 	public function render(fb: Framebuffer): Void {
 		backbuffer = [for (xy in 0...fb.width * fb.height) 0xffffffff];
 
-		fb.g1.begin();
+		fb.g2.begin();
 		for (y in 0...fb.height) {
 			for (x in 0...fb.width) {
 				var pixelColor: Color = renderer.getPixelColor(x, y, fb.width, fb.height);
 				backbuffer[y * fb.width + x] = pixelColor;
 			}
 		}
-		fb.g1.end();
+
+		var bytes: Bytes = pixelsToBytes(backbuffer, fb.width, fb.height);
+		var image: Image = Image.fromBytes(bytes, fb.width, fb.height);
+		fb.g2.drawImage(image, 0, 0);
+		fb.g2.end();
 	}	
 }
 
