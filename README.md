@@ -47,10 +47,18 @@ A hobby ray tracer from scratch in Haxe using Kha as a low-level graphics API (f
 - decouple from dconsole via events
 - Issue: dcmonitor won't open on native (shift+tab)
 - adaptive render sampling
-- recover obj / triangles
+[x] recover obj / triangles
 - dconsole in separate thread (where available)
 #### Today:
-- sample views based on camera rotation
-- save sampled views to files & corresponding view params
-- do for each scene
+[x] sample views based on camera rotation
+[x] save sampled views to files & corresponding view params
+[x] do for each scene
 
+### Updated workflow:
+- subscribe for refresh only when scene params change
+- each render pass take constant time, each time evaluating a sample of rays - cached between updates
+  - displayed at low res
+- when rendered at target resolution, stop
+- render sampler should be automatically reflected in preview
+- on close save image off backbuffer
+- replace backbuffer with g2.Image

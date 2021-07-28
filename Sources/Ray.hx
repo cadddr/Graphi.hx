@@ -2,7 +2,7 @@ import kha.math.Vector3;
 // import Scene.numRays;
 
 class Ray {
-  var MAX_HOPS = 3;
+  var MAX_HOPS = 1;
   public var origin: Vector3;
   var direction: Vector3;
   var bounceCount: Int;

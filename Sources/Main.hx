@@ -15,6 +15,7 @@ import Scene;
 import Render;
 import RenderSampler.IRenderSampler;
 import RenderSampler.SimpleRender;
+import RenderSampler.BufferedRenderer;
 import RenderSampler.AdaptiveRender;
 
 import pgr.dconsole.DC;
@@ -46,8 +47,10 @@ class Main {
 	static var sampler: IRenderSampler;
 	static var viewSampler: RandomViewSampler;
 
+	static var framebuffer: Framebuffer;
+
 	public static function main() {
-		var frame: Array<Color>;
+		
 
 		System.start({title: TITLE, width: WIDTH, height: HEIGHT}, function (window:Window) {
 			Assets.loadBlobFromPath('config.json', function (blob) {
@@ -55,32 +58,34 @@ class Main {
 				trace (config);
 
 				Assets.loadBlobFromPath(config.INPUT, function (blob) {
-					scene = Scene.readNff(blob.toString());
+					if (StringTools.endsWith(config.INPUT, '.nff')) {
+						scene = Scene.readNff(blob.toString());
+					}
+					else if (StringTools.endsWith(config.INPUT, '.obj')) {
+						scene = Scene.readObj(blob.toString());
+					}
 					
 					renderer = new Render(scene);
-					
-					sampler = new AdaptiveRender(renderer);
-					// DC.init();
-					// DC.registerObject(renderer, "render");
-					// DC.registerClass(Main, "Main");
+					sampler = new SimpleRender(renderer);
+					viewSampler = new RandomViewSampler(scene, sampler);
 
-					System.notifyOnFrames(function (framebuffers) {
-						// DC.beginProfile("Render");
-						sampler.render(framebuffers[0]);
-						frame = sampler.backbuffer;
-						// DC.endProfile("Render");
-					});
+					DC.init();
+					DC.registerObject(renderer, "render");
+					DC.registerClass(Main, "Main");
+
+					System.notifyOnFrames(Main.render);
+					// System.removeFramesListener(Main.render);
 				});
 			});
 		});
-		        // #if sys
-		// // sys.io.File.saveBytes(config.outputDir + 'output.txt', new haxe.io.Bytes(WIDTH, sampler.backbuffer[0]));
-		// #end
-		// var file: StorageFile = (Storage.defaultFile());
-		// var bytes: Bytes = Bytes.alloc(WIDTH * HEIGHT * 4);
-		// for (i in 0...WIDTH * HEIGHT) {
-		// 	bytes.setInt32(i * 4, frame[i]);
-		// }
-		// file.write(Blob.fromBytes(bytes));
+
+		viewSampler.sampleAndSave(framebuffer, 1);
+	}
+
+	static function render(framebuffers: Array<Framebuffer>): Void {
+		DC.beginProfile("Render");
+		sampler.render(framebuffers[0]);
+		DC.endProfile("Render");
+		framebuffer = framebuffers[0];
 	}
 }

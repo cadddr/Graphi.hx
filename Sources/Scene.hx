@@ -2,6 +2,8 @@ import kha.math.Vector3;
 import Std.parseInt;
 import Std.parseFloat;
 import Utils.parseVector3;
+import Utils.multvec3;
+import Utils.rotmat;
 import Surface;
 import Surface.Sphere;
 import Surface.Face;
@@ -18,9 +20,9 @@ class Scene {
 	public var fov = Math.PI / 4;
   public var default_color = 0xff7ec0ee;//0xffffa500;
 
-  public var from: Vector3;
-	public var up: Vector3;
-	public var at: Vector3;
+  public var from:Vector3;// = new Vector3(0, 2, -2);
+	public var up:Vector3;// = new Vector3(0, 1, 0);
+	public var at:Vector3;// = new Vector3(0, 2, 0);
 	public var surfs: Array<Surface> = [];
   public var lights: Array<Vector3> = [];
 
@@ -82,6 +84,54 @@ class Scene {
 				));
 			}
     }
+    return scene;
+	}
+
+  public static function readObj(input:String): Scene {
+    var scene = new Scene();
+		trace ('read obj');
+		var vertices = [null];
+		var normals = [null];
+		for (line in input.split('\n')) {
+			if (line.charAt(0) == '#' || line.length == 0) continue;
+			var vals = line.split(' ');
+			switch vals[0] {
+				case 'v': vertices.push(parseVector3(vals.slice(1, 4)));
+				case 'vn': normals.push(parseVector3(vals.slice(1, 4)));
+				case 'f': {
+					//n=4
+					// f 0 1 2 3
+					// 0 1 2 3 4
+					//     i j
+					//   0 1 2
+					//   0 2 3
+					// 0 (i) (i + 1)  [for i in 1..(n - 2)]
+					trace(line);
+					for (i in 1 + 1...vals.length - 1) {
+						scene.surfs.push(new Face(
+							vertices[parseInt(vals[1].split('/')[0])],
+							vertices[parseInt(vals[i].split('/')[0])],
+							vertices[parseInt(vals[i + 1].split('/')[0])],
+							0xffffffff,
+							vertices[parseInt(vals[1].split('/')[2])]
+						));
+						trace(i, vals[1], vals[i], vals[i + 1]);
+					}
+					// surfs.push(new Face(
+					// 	vertices[parseInt(vals.slice(1, 4)[0].split('/')[0])],
+					// 	vertices[parseInt(vals.slice(1, 4)[1].split('/')[0])],
+					// 	vertices[parseInt(vals.slice(1, 4)[2].split('/')[0])],
+					// 	0xffffffff,
+					// 	normals[parseInt(vals.slice(1, 4)[0].split('/')[2])]
+					// ));
+				}
+			}
+		}
+		trace('Read ${scene.surfs.length} triangles.');
+		scene.lights.push(scene.from);
+		scene.lights.push(multvec3(rotmat(Math.PI/2), scene.from));
+		// lights.push(new Vector3(10, 10, 0));
+
     return scene;
 	}
 }

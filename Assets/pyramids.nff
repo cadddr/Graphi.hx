@@ -1,0 +1,39 @@
+up 0 1 0
+from 0 0 -1
+at 0 0 1
+
+#s .275 0 -.5 .025 0xffffaaaa
+s 0 0 3 1 0xffaaaaff
+s 0.5 0 1 0.25 0xffffaaaa
+s -0.5 0 1 0.1 0xffaaffaa
+s 0 -10 1 9 0xffffa500
+
+l -1 10 1
+l .5 0 -1
+l 0 1 10
+l -10 1 0
+
+#t 0 -1 1 1 -1 1 0 0 1 0xffaaaaff
+#t 0 0 1 0 -1 0 0 -1 1 0xffaaaaff
+
+t 0 0 1 1 -1 1 0 -1 0 0xffaaaaff
+t 0 -1 0 -1 -1 1 0 0 1 0xffaaaaff 
+t -1 -1 1 0 -1 2 0 0 1 0xffaaaaff
+t 0 0 1 0 -1 2 1 -1 1 0xffaaaaff
+
+t 1 1 1 0 0 1 0 1 0 0xffaaaaff
+t -1 1 1 0 1 0 0 0 1 0xffaaaaff 
+t 0 1 2 -1 1 1 0 0 1 0xffaaaaff
+t 0 1 2 0 0 1 1 1 1 0xffaaaaff
+
+#t 2 -1 2 -2 -1 2 -2 3 2 0xffaaaaff
+
+#t .125 -.125 .5 -.125 .125 .5 -.125 -.125 .5 0xffaaaaff
+#t -.125 .125 .5 .125 -.125 .5 -.125 -.125 .25 0xffffaaaa
+#t -.125 -.125 .25 .125 -.125 .5 -.125 -.125 .5 0xffaaffaa
+#t -.125 -.125 .5 -.125 .125 .5 -.125 -.125 .25 0xffffa500
+
+# triangles
+# var a = [new Vector3(0.125, -0.125, .1), new Vector3(0.125, -0.125, 0)];
+# var b = [new Vector3(-0.125, -0.125, .1), new Vector3(-0.125, -0.125, 0)];
+# var c = [new Vector3(0, 0.125, .1), new Vector3(0, 0.125, 0)];

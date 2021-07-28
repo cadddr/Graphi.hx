@@ -33,6 +33,29 @@ class SimpleRender implements IRenderSampler {
     }
 }
 
+class BufferedRenderer implements IRenderSampler {
+	// Caches pixel values before displaying
+	private var renderer: Render;
+	public var backbuffer: Array<Color>;
+
+	public function new(renderer: Render) {
+        this.renderer = renderer;
+	}
+
+	public function render(fb: Framebuffer): Void {
+		backbuffer = [for (xy in 0...fb.width * fb.height) 0xffffffff];
+
+		fb.g1.begin();
+		for (y in 0...fb.height) {
+			for (x in 0...fb.width) {
+				var pixelColor: Color = renderer.getPixelColor(x, y, fb.width, fb.height);
+				backbuffer[y * fb.width + x] = pixelColor;
+			}
+		}
+		fb.g1.end();
+	}	
+}
+
 class AdaptiveRender implements IRenderSampler {
     /*
 currently: re-render everything on each frame (blocking)

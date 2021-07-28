@@ -13,6 +13,7 @@ import kha.Blob;
 import kha.Color;
 import kha.Framebuffer;
 
+import Utils.pixelsToBytes;
 ///Makes the renderer render a scene from multiple viewpoints.
 
 class RandomViewSampler {
@@ -28,7 +29,7 @@ class RandomViewSampler {
         var viewsBytes: Bytes = Bytes.alloc(numViews * fb.width * fb.height * 4);
 
         for (i in 0...numViews) {
-            scene.from = new Vector3(Std.random(2) - 1, Std.random(2) - 1, Std.random(2) - 1);
+            // scene.from = new Vector3(Std.random(2) - 1, Std.random(2) - 1, Std.random(2) - 1);
             sampler.render(fb);
 
             var viewBytes: Bytes = pixelsToBytes(sampler.backbuffer, fb.width, fb.height);
@@ -36,14 +37,6 @@ class RandomViewSampler {
         }
 
         saveBytes(viewsBytes);
-    }
-
-    public static function pixelsToBytes(pixels: Array<Color>, WIDTH: Int, HEIGHT: Int): Bytes {
-        var bytes: Bytes = Bytes.alloc(WIDTH * HEIGHT * 4);
-		for (i in 0...WIDTH * HEIGHT) {
-			bytes.setInt32(i * 4, pixels[i]);
-		}
-        return bytes;
     }
 
     public function saveBytes(bytes:Bytes): Void {
