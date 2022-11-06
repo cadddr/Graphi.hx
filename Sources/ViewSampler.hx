@@ -12,9 +12,10 @@ import haxe.io.Bytes;
 import kha.Blob;
 import kha.Color;
 import kha.Framebuffer;
+import Math;
 
 import Utils.pixelsToBytes;
-///Makes the renderer render a scene from multiple viewpoints.
+//Makes the renderer render a scene from multiple viewpoints.
 
 class RandomViewSampler {
     private var scene: Scene;
@@ -29,7 +30,7 @@ class RandomViewSampler {
         var viewsBytes: Bytes = Bytes.alloc(numViews * fb.width * fb.height * 4);
 
         for (i in 0...numViews) {
-            // scene.from = new Vector3(Std.random(2) - 1, Std.random(2) - 1, Std.random(2) - 1);
+            scene.rotateView(2 * Math.PI / numViews);
             sampler.render(fb);
 
             var viewBytes: Bytes = pixelsToBytes(sampler.backbuffer, fb.width, fb.height);

@@ -47,14 +47,17 @@ class BufferedRenderer implements IRenderSampler {
 	}
 
 	public function render(fb: Framebuffer): Void {
-		backbuffer = [for (xy in 0...fb.width * fb.height) 0xffffffff];
-
-		for (y in 0...fb.height) {
-			for (x in 0...fb.width) {
-				var pixelColor: Color = renderer.getPixelColor(x, y, fb.width, fb.height);
-				backbuffer[y * fb.width + x] = pixelColor;
-			}
-		}	
+	   if (renderer.scene.SCENE_CHANGED) {
+    		backbuffer = [for (xy in 0...fb.width * fb.height) 0xffffffff];
+    
+    		for (y in 0...fb.height) {
+    			for (x in 0...fb.width) {
+    				var pixelColor: Color = renderer.getPixelColor(x, y, fb.width, fb.height);
+    				backbuffer[y * fb.width + x] = pixelColor;
+    			}
+    		}
+            renderer.scene.SCENE_CHANGED = false;
+		}
 		draw(fb);	
 	}	
 

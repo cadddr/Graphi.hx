@@ -41,7 +41,7 @@ class Main {
 	static var TITLE = "Grafikha";
 	static var WIDTH = 512;
 	static var HEIGHT = 512;
-	static var REFRESH_RATE = 1 / 64;
+	static var REFRESH_RATE = 1 / 1;
 
 	static var scene: Scene;
 	static var renderer: Render;
@@ -68,7 +68,7 @@ class Main {
 					
 					renderer = new Render(scene);
 					// sampler = new NewAdaptiveRender(renderer, function() {System.removeFramesListener(Main.render);});
-					sampler = new SimpleRender(renderer);
+					sampler = new BufferedRenderer(renderer);
 					viewSampler = new RandomViewSampler(scene, sampler);
 
 					DC.init();

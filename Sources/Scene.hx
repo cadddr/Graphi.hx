@@ -1,4 +1,5 @@
 import kha.math.Vector3;
+import kha.math.Matrix4;
 import Std.parseInt;
 import Std.parseFloat;
 import Utils.parseVector3;
@@ -11,6 +12,8 @@ import Math;
 import StringTools;
 
 class Scene {
+
+    public var SCENE_CHANGED = true;
   public var RENDER_DIFFUSE_SHADING = true;
 	public var RENDER_SPECULAR_SHADING = true;
 	public var RENDER_REFLECTIONS = true;
@@ -133,5 +136,18 @@ class Scene {
 		// lights.push(new Vector3(10, 10, 0));
 
     return scene;
+	}
+	
+	public function rotateView(view_rot:Float): Void {
+    	var c = Math.cos(view_rot);
+    	var s = Math.sin(view_rot);
+    	var rot = new Matrix4(
+        	c, 0, -s, 0, 
+        	0, 1,  0, 0, 
+        	s, 0,  c, 0,
+        	0, 0,  0, 1
+        );
+    	from = multvec3(rot, from.sub(at)).add(at);
+    	SCENE_CHANGED = true;
 	}
 }
