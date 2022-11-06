@@ -1,3 +1,4 @@
+import haxe.macro.Expr.Function;
 import kha.Framebuffer;
 import Render;
 import kha.Color;
@@ -48,19 +49,64 @@ class BufferedRenderer implements IRenderSampler {
 	public function render(fb: Framebuffer): Void {
 		backbuffer = [for (xy in 0...fb.width * fb.height) 0xffffffff];
 
-		fb.g2.begin();
 		for (y in 0...fb.height) {
 			for (x in 0...fb.width) {
 				var pixelColor: Color = renderer.getPixelColor(x, y, fb.width, fb.height);
 				backbuffer[y * fb.width + x] = pixelColor;
 			}
-		}
+		}	
+		draw(fb);	
+	}	
 
+	public function draw(fb: Framebuffer): Void {
+		fb.g2.begin();
 		var bytes: Bytes = pixelsToBytes(backbuffer, fb.width, fb.height);
 		var image: Image = Image.fromBytes(bytes, fb.width, fb.height);
 		fb.g2.drawImage(image, 0, 0);
 		fb.g2.end();
-	}	
+	}
+}
+
+class NewAdaptiveRender extends BufferedRenderer {
+	var callCount: Int = 0;
+	var resolutionScale: Int = 256;
+	var onRenderComplete = null;
+
+	public function new(renderer: Render, onRenderComplete) {
+		super(renderer);
+		this.onRenderComplete = onRenderComplete;
+	}
+
+	override public function render(fb: Framebuffer): Void {
+		if (resolutionScale == 1) {
+			draw(fb);
+			return;
+		}
+
+		if (callCount == 0) {
+			backbuffer = [for (xy in 0...fb.width * fb.height) 0xff000000];
+		}
+
+
+
+		for (y in 0...fb.height) {
+			for (x in 0...fb.width) {
+
+				if (y % resolutionScale == 0) {
+					if (x % resolutionScale == 0) {
+						
+						var pixelColor: Color = renderer.getPixelColor(x, y, fb.width, fb.height);
+						backbuffer[y * fb.width + x] = pixelColor;
+					}
+				}
+			}
+		}
+		resolutionScale = Std.int(Math.max(1, resolutionScale / 2));
+
+		callCount = (callCount + 1) % (resolutionScale * resolutionScale);
+
+		draw(fb);
+	}
 }
 
 class AdaptiveRender implements IRenderSampler {

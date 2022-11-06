@@ -17,6 +17,7 @@ import RenderSampler.IRenderSampler;
 import RenderSampler.SimpleRender;
 import RenderSampler.BufferedRenderer;
 import RenderSampler.AdaptiveRender;
+import RenderSampler.NewAdaptiveRender;
 
 import pgr.dconsole.DC;
 
@@ -66,7 +67,8 @@ class Main {
 					}
 					
 					renderer = new Render(scene);
-					sampler = new BufferedRenderer(renderer);
+					// sampler = new NewAdaptiveRender(renderer, function() {System.removeFramesListener(Main.render);});
+					sampler = new SimpleRender(renderer);
 					viewSampler = new RandomViewSampler(scene, sampler);
 
 					DC.init();
@@ -74,12 +76,11 @@ class Main {
 					DC.registerClass(Main, "Main");
 
 					System.notifyOnFrames(Main.render);
-					// System.removeFramesListener(Main.render);
 				});
 			});
 		});
 
-		viewSampler.sampleAndSave(framebuffer, 1);
+		// viewSampler.sampleAndSave(framebuffer, 1);
 	}
 
 	static function render(framebuffers: Array<Framebuffer>): Void {
