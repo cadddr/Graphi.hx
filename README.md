@@ -1,4 +1,8 @@
-# Graphi.hx
+# Graphi.hx ✨🪩🔭
+![](screenshots/spheres.jpg)
+![](screenshots/scene.gif)
+![](screenshots/monkey.jpg)
+
 Pronounced ***grae:fi/h/ks***, alternatively Grafikha -- a nod to either Haxe language or Kha graphics backend or whatever.
 
 A hobby ray tracer from scratch in Haxe using Kha as a low-level graphics API (for vector maths and putting pixels on the screen).
@@ -49,10 +53,6 @@ A hobby ray tracer from scratch in Haxe using Kha as a low-level graphics API (f
 - adaptive render sampling
 [x] recover obj / triangles
 - dconsole in separate thread (where available)
-#### Today:
-[x] sample views based on camera rotation
-[x] save sampled views to files & corresponding view params
-[x] do for each scene
 
 ### Updated workflow:
 - subscribe for refresh only when scene params change
