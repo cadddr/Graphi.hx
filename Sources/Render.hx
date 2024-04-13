@@ -77,6 +77,7 @@ class Render {
     // var color:Vector3 = null;
     // for (i in 0...scene.numSamples) {
       var to = scene.screenSpaceToWorldSpace(x, y, width, height);
+      trace (to.x, to.y, to.z);
       var ray = new Ray(scene.from, to);
       var color = getColorAlongRayDirection(ray);
       return vec2col(color);

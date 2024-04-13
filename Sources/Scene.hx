@@ -14,9 +14,9 @@ import StringTools;
 class Scene {
 
     public var SCENE_CHANGED = true;
-  public var RENDER_DIFFUSE_SHADING = true;
-	public var RENDER_SPECULAR_SHADING = true;
-	public var RENDER_REFLECTIONS = true;
+  public var RENDER_DIFFUSE_SHADING = false;
+	public var RENDER_SPECULAR_SHADING = false;
+	public var RENDER_REFLECTIONS = false;
 	public var RENDER_TRANSPARENCY = false;
 
   public var hither = 0.05;
@@ -137,13 +137,13 @@ class Scene {
 
     return scene;
 	}
-	
+
 	public function rotateView(view_rot:Float): Void {
     	var c = Math.cos(view_rot);
     	var s = Math.sin(view_rot);
     	var rot = new Matrix4(
-        	c, 0, -s, 0, 
-        	0, 1,  0, 0, 
+        	c, 0, -s, 0,
+        	0, 1,  0, 0,
         	s, 0,  c, 0,
         	0, 0,  0, 1
         );

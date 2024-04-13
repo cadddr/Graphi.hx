@@ -1,6 +1,6 @@
 {
 	"INPUT": "spheres.nff",
-    "WIDTH" : 512,
-	"HEIGHT" : 512,
+    "WIDTH" : 128,
+	"HEIGHT" : 128,
 	"outputDir": "../../"
 }

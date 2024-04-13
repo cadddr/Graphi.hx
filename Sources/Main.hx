@@ -39,8 +39,8 @@ import ViewSampler.RandomViewSampler;
 
 class Main {
 	static var TITLE = "Grafikha";
-	static var WIDTH = 512;
-	static var HEIGHT = 512;
+	static var WIDTH = 128;
+	static var HEIGHT = 128;
 	static var REFRESH_RATE = 1 / 1;
 
 	static var scene: Scene;
@@ -51,7 +51,7 @@ class Main {
 	static var framebuffer: Framebuffer;
 
 	public static function main() {
-		
+
 
 		System.start({title: TITLE, width: WIDTH, height: HEIGHT}, function (window:Window) {
 			Assets.loadBlobFromPath('config.json', function (blob) {
@@ -65,7 +65,7 @@ class Main {
 					else if (StringTools.endsWith(config.INPUT, '.obj')) {
 						scene = Scene.readObj(blob.toString());
 					}
-					
+
 					renderer = new Render(scene);
 					// sampler = new NewAdaptiveRender(renderer, function() {System.removeFramesListener(Main.render);});
 					sampler = new BufferedRenderer(renderer);
@@ -80,7 +80,7 @@ class Main {
 			});
 		});
 
-		// viewSampler.sampleAndSave(framebuffer, 1);
+		viewSampler.sampleAndSave(framebuffer, 1);
 	}
 
 	static function render(framebuffers: Array<Framebuffer>): Void {
