@@ -1,5 +1,5 @@
 {
-	"INPUT": "spheres.nff",
+	"INPUT": "monkey.obj",
     "WIDTH" : 128,
 	"HEIGHT" : 128,
 	"outputDir": "../../"

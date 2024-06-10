@@ -30,6 +30,7 @@ class RandomViewSampler {
         var viewsBytes: Bytes = Bytes.alloc(numViews * fb.width * fb.height * 4);
 
         for (i in 0...numViews) {
+            trace(i);
             scene.rotateView(2 * Math.PI / numViews);
             sampler.render(fb);
 

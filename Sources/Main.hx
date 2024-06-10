@@ -80,7 +80,7 @@ class Main {
 			});
 		});
 
-		viewSampler.sampleAndSave(framebuffer, 1);
+		viewSampler.sampleAndSave(framebuffer, 360);
 	}
 
 	static function render(framebuffers: Array<Framebuffer>): Void {

@@ -21,11 +21,11 @@ class Scene {
 
   public var hither = 0.05;
 	public var fov = Math.PI / 4;
-  public var default_color = 0xff7ec0ee;//0xffffa500;
+  public var default_color = 0x00000000;//0xff7ec0ee;//0xffffa500;
 
-  public var from:Vector3;// = new Vector3(0, 2, -2);
-	public var up:Vector3;// = new Vector3(0, 1, 0);
-	public var at:Vector3;// = new Vector3(0, 2, 0);
+  public var from:Vector3 = new Vector3(-2, 0, -2);
+	public var up:Vector3 = new Vector3(0, 1, 0);
+	public var at:Vector3 = new Vector3(0, 0, 0);
 	public var surfs: Array<Surface> = [];
   public var lights: Array<Vector3> = [];
 
@@ -134,8 +134,8 @@ class Scene {
 		scene.lights.push(scene.from);
 		scene.lights.push(multvec3(rotmat(Math.PI/2), scene.from));
 		// lights.push(new Vector3(10, 10, 0));
-
-    return scene;
+		
+    	return scene;
 	}
 
 	public function rotateView(view_rot:Float): Void {
